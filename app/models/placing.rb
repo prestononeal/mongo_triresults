@@ -1,4 +1,7 @@
 class Placing
+  """
+  A ranked order someone finishes in a race within a category.
+  """
   attr_accessor :name, :place
 
   def initialize(name, place)

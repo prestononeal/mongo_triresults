@@ -1,4 +1,9 @@
 class RacerInfo
+  """
+  Represents a Racer identity required by races he/she enters. The master copy
+  is embedded within Racer. A copy of this is embedded within his/her Entrant,
+  which represents the entry within a race.
+  """
   include Mongoid::Document
 
   store_in collection: "racers"

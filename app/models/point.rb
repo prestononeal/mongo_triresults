@@ -1,4 +1,7 @@
 class Point
+  """
+  A geographic point for an address.
+  """
   attr_accessor :longitude, :latitude
 
   def initialize(longitude, latitude)

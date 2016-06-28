@@ -1,4 +1,7 @@
 class Address
+  """
+  Descriptive information for where something is located
+  """
   attr_accessor :city, :state, :location
 
   def initialize(city, state, location)

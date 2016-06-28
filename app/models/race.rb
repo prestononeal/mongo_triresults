@@ -1,4 +1,7 @@
 class Race
+  """
+  Represents the overall race with its events and entrant information.
+  """
   include Mongoid::Document
   include Mongoid::Timestamps
 

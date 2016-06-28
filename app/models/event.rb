@@ -1,4 +1,8 @@
 class Event
+  """
+  Represents a specific event within a race. It has a name
+  (e.g. 'Swim', 'Bike', or 'Run') and a distance.
+  """
   include Mongoid::Document
   field :o, as: :order, type: Integer
   field :n, as: :name, type: String

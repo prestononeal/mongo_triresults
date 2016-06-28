@@ -1,4 +1,7 @@
 class Racer
+  """
+  Represents a single individual and reference to all race entries.
+  """
   include Mongoid::Document
 
   store_in collection: "racers"
