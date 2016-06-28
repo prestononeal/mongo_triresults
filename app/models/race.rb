@@ -2,6 +2,8 @@ class Race
   include Mongoid::Document
   include Mongoid::Timestamps
 
+  store_in collection: "races"
+
   field :n, as: :name, type: String
   field :date, as: :date, type: Date
   field :loc, as: :location, type: Address

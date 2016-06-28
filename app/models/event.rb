@@ -5,6 +5,8 @@ class Event
   field :d, as: :distance, type: Float
   field :u, as: :units, type: String
 
+  store_in collection: "races"
+
   embedded_in :parent, polymorphic: true, touch: true
 
   validates_presence_of :order, :name
