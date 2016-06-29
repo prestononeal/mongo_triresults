@@ -24,4 +24,9 @@ class Entrant
     self.secs = 0
     self.results.each { |res| self.secs += res.secs}
   end
+
+  def the_race
+    # Custom getter that returns the result of the embedded RaceRef's Race
+    race.race if !race.nil?
+  end
 end
