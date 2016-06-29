@@ -15,5 +15,5 @@ class Entrant
   field :gender, type: Placing
   field :group, type: Placing
 
-  embeds_many :results, class_name: "LegResult"
+  embeds_many :results, class_name: "LegResult", order: [:"event.o".asc]
 end
