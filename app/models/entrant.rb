@@ -15,5 +15,12 @@ class Entrant
   field :gender, type: Placing
   field :group, type: Placing
 
-  embeds_many :results, class_name: "LegResult", order: [:"event.o".asc]
+  embeds_many :results, class_name: "LegResult", order: [:"event.o".asc], after_add: :update_total
+
+  def update_total(result)
+    # A relationship callback to recalculate the sum of all event times
+    # known to the Entrant
+    self.secs = 0
+    self.results.each { |res| self.secs += res.secs}
+  end
 end
