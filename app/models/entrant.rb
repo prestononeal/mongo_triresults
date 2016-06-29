@@ -17,6 +17,7 @@ class Entrant
 
   embeds_many :results, class_name: "LegResult", order: [:"event.o".asc], after_add: :update_total
   embeds_one :race, class_name: "RaceRef"
+  embeds_one :racer, as: :parent, class_name: "RacerInfo"
 
   def update_total(result)
     # A relationship callback to recalculate the sum of all event times
