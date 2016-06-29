@@ -16,6 +16,7 @@ class Entrant
   field :group, type: Placing
 
   embeds_many :results, class_name: "LegResult", order: [:"event.o".asc], after_add: :update_total
+  embeds_one :race, class_name: "RaceRef"
 
   def update_total(result)
     # A relationship callback to recalculate the sum of all event times
