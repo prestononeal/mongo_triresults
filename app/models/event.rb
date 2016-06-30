@@ -17,19 +17,19 @@ class Event
 
   def meters
     case self.units
-    when "meters" then self.distance
-    when "kilometers" then self.distance * 1000
-    when "yards" then self.distance * 0.9144
-    when "miles" then self.distance * 1609.344
+    when "meters" then distance
+    when "kilometers" then distance * 1000
+    when "yards" then distance * 0.9144
+    when "miles" then distance * 1609.344
     end
   end
 
   def miles
     case self.units
-    when "meters" then self.distance / 1609.344
-    when "kilometers" then self.distance * 0.621371
-    when "yards" then self.distance * 0.000568182
-    when "miles" then self.distance
+    when "meters" then distance / 1609.344
+    when "kilometers" then distance * 0.621371
+    when "yards" then distance * 0.000568182
+    when "miles" then distance
     end
   end
 end

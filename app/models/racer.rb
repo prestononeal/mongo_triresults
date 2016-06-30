@@ -10,6 +10,7 @@ class Racer
   has_many :races, class_name: "Entrant", foreign_key: "racer.racer_id", dependent: :nullify,
     order: :"race.date".desc
 
+  # Flatten the info properties
   delegate :first_name, :first_name=, to: :info
   delegate :last_name, :last_name=, to: :info
   delegate :gender, :gender=, to: :info
