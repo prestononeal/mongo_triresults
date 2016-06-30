@@ -10,9 +10,9 @@ class Race
   field :n, as: :name, type: String
   field :date, as: :date, type: Date
   field :loc, as: :location, type: Address
+  field :next_bib, type: Integer, :default => 0
 
   embeds_many :events, as: :parent, order: [:order.asc]
-
   has_many :entrants, foreign_key: "race._id", dependent: :delete, order: [:secs.asc, :bib.asc]
 
   scope :upcoming, -> { where(:date.gte => Date.current) }
@@ -66,5 +66,52 @@ class Race
       object.send("#{action}=", name)
       self.location=object
     end
+  end
+
+  # Return a criteria result representing all the upcoming Races that the Racer
+  # has not yet registered for
+  def self.upcoming_available_to racer
+    # Get all of the upcoming race ID's for this racer
+    upcoming_race_ids = racer.races.upcoming.pluck(:race).map {|r| r[:_id]}
+    Race.upcoming.not_in(:_id=>upcoming_race_ids)
+  end
+
+  # Find the next available bib
+  def next_bib
+    self.inc(:next_bib=>1)
+    self[:next_bib]
+  end
+
+  # Return a Placing instance with its name set to the name of the age group the racer
+  # will be competing in.
+  def get_group racer
+    if racer && racer.birth_year && racer.gender
+      quotient = (date.year-racer.birth_year)/10
+      min_age = quotient*10
+      max_age = ((quotient+1)*10)-1
+      gender = racer.gender
+      name = min_age >= 60 ? "masters #{gender}" : "#{min_age} to #{max_age} (#{gender})"
+      Placing.demongoize(:name=>name)
+    end
+  end
+
+  # Create a new Entrant for the Race for a supplied Racer
+  def create_entrant racer
+    e = Entrant.new
+    e.build_race(self.attributes.symbolize_keys.slice(:_id, :n, :date))
+    e.build_racer(racer.info.attributes)
+    e.group = get_group(racer)
+
+    # Create a result for every Race event
+    DEFAULT_EVENTS.each do |name, attrs|
+      e.send("#{name}=", attrs)
+    end
+
+    # validate the new entrant and get a bib before saving it
+    if e.validate
+      e.bib = next_bib
+      e.save
+    end
+    return e
   end
 end
