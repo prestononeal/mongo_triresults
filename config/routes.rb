@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root "races#index"
   resources :racers do
     post "entries" => "racers#create_entry"
   end
