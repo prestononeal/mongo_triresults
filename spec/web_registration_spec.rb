@@ -13,8 +13,8 @@ feature "Module #3 Web Racer/Race Registration", :type => :routing do
 
   around :each do |example|
     if $continue
-      $continue = false 
-      example.run 
+      $continue = false
+      example.run
       $continue = true unless example.exception
     else
       example.skip
@@ -31,14 +31,14 @@ feature "Module #3 Web Racer/Race Registration", :type => :routing do
     before :all do
       init_mongo_db
     end
-    
-    scenario "racer#create_entry route will create a registration in the db" do 
+
+    scenario "racer#create_entry route will create a registration in the db" do
       # get race and racer for post
       test_racer = Racer.first
       test_race = Race.upcoming_available_to(test_racer).first
       orig_entrant_ids = test_race.entrants.to_a.map{|e| e.id}
-      page.driver.post("racers/#{test_racer.id}/entries?race_id=#{test_race.id}") 
-      expect(page.status_code).to be < 400 
+      page.driver.post("racers/#{test_racer.id}/entries?race_id=#{test_race.id}")
+      expect(page.status_code).to be < 400
       updated_entrants = Race.find(test_race.id).entrants.to_a
       # confirm there is one more entrant that before
       expect(updated_entrants.count).to eql orig_entrant_ids.count + 1
@@ -53,19 +53,19 @@ feature "Module #3 Web Racer/Race Registration", :type => :routing do
     before :all do
       init_mongo_db
     end
-    
-    scenario "There is a Register link on the racers#edit view page" do 
+
+    scenario "There is a Register link on the racers#edit view page" do
       racer = Racer.first
       race_ids = (Race.upcoming_available_to(racer).to_a.map{ |r| r.id.to_s }).sort
       visit(edit_racer_path(racer.id))
-      expect(page.status_code).to eq(200)  
-      
+      expect(page.status_code).to eq(200)
+
       race_id_links = Array.new
       links = Array.new
       page.all('a').each { |l|
         link_uri = URI.parse(l[:href]).to_s
-        if ((link_uri.split("/")).length > 3) then   
-          cur_racer_id = (link_uri.split("/"))[2]   
+        if ((link_uri.split("/")).length > 3) then
+          cur_racer_id = (link_uri.split("/"))[2]
           # now get race_id param
           links.push(l)
           race_id_links.push(((link_uri.split("/"))[3]).split("=")[1])
