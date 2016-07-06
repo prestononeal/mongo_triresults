@@ -25,5 +25,10 @@ module Triresults
 
     # bootstraps mongoid within applications
     Mongoid.load!('./config/mongoid.yml')
+
+    # Usually everything under the app/ folder is automatically added to the path,
+    # but sometimes with the inclusion of Mongoid, that feature is broken, so
+    # explicitly add it here.
+    config.eager_load_paths += %W( #{config.root}/app/services )
   end
 end

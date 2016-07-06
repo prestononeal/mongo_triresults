@@ -45,11 +45,11 @@ group :development do
   gem 'spring'
 end
 
-#group :production do
+group :production do
   #use postgres on heroku
-#  gem 'pg'
-#  gem 'rails_12factor'
-#end
+  gem 'pg'
+  gem 'rails_12factor'
+end
 
 group :test do
     gem 'rspec-rails', '~> 3.0'
@@ -60,8 +60,5 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'mongoid', '~> 5.0.0'
-
-group :production do
-  gem 'rails_12factor'
-  gem 'pg'
-end
+gem 'httparty'
+gem 'responders', '~> 2.0'
