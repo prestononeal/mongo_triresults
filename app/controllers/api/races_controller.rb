@@ -23,7 +23,8 @@ class Api::RacesController < ApplicationController
   # POST api/races
   def create
     if !request.accept || request.accept == "*/*"
-      render plain: :nothing, status: :ok
+      txt = params.key?(:race) ? "#{params[:race][:name]}" : :nothing
+      render plain: txt, status: :ok
     else
     # real implementation
     end
