@@ -1,5 +1,6 @@
 class Api::RacesController < ApplicationController
   protect_from_forgery with: :null_session
+  before_action :set_race, only: [:show]
 
   # GET api/races
   def index
@@ -17,8 +18,7 @@ class Api::RacesController < ApplicationController
       render plain: "/api/races/#{params[:id]}"
     else
       # real implementation
-      race = Race.find(params[:id])
-      render json: race
+      render json: @race
     end
   end
 
@@ -34,6 +34,11 @@ class Api::RacesController < ApplicationController
   end
 
   private
+   # Use callbacks to share common setup or constraints between actions.
+    def set_race
+      @race = Race.find(params[:id])
+    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def race_params
       params.require(:race).permit(:name, :date, :city, :state, :swim_distance, :swim_units, :bike_distance, :bike_units, :run_distance, :run_units)
