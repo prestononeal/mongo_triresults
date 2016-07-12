@@ -1,6 +1,6 @@
 class Api::RacesController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_race, only: [:show, :update]
+  before_action :set_race, only: [:show, :update, :destroy]
 
   # GET api/races
   def index
@@ -40,6 +40,12 @@ class Api::RacesController < ApplicationController
     else
       render json: @race.errors, status: :unprocessable_entity
     end
+  end
+
+  # DELETE api/races/:id
+  def destroy
+    @race.destroy
+    render :nothing => true, :status => :no_content
   end
 
   private
