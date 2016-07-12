@@ -17,6 +17,8 @@ class Api::RacesController < ApplicationController
       render plain: "/api/races/#{params[:id]}"
     else
       # real implementation
+      race = Race.find(params[:id])
+      render json: race
     end
   end
 
