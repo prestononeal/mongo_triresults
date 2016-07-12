@@ -4,7 +4,8 @@ class Api::RacesController < ApplicationController
   # GET api/races
   def index
     if !request.accept || request.accept == "*/*"
-      render plain: "/api/races"
+      offset = params['']
+      render plain: "/api/races, offset=[#{params["offset"]}], limit=[#{params["limit"]}]"
     else
       # real implementation
     end
