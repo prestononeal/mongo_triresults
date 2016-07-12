@@ -26,8 +26,15 @@ class Api::RacesController < ApplicationController
       txt = params.key?(:race) ? "#{params[:race][:name]}" : :nothing
       render plain: txt, status: :ok
     else
-    # real implementation
+      race = Race.create(race_params)
+      render plain: race.name, status: :created
     end
   end
+
+  private
+    # Never trust parameters from the scary internet, only allow the white list through.
+    def race_params
+      params.require(:race).permit(:name, :date, :city, :state, :swim_distance, :swim_units, :bike_distance, :bike_units, :run_distance, :run_units)
+    end
 
 end
