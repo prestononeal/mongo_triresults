@@ -2,6 +2,11 @@ class Api::RacesController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :set_race, only: [:show, :update, :destroy]
 
+  # Global exception handler for when a document is not found
+  rescue_from Mongoid::Errors::DocumentNotFound do |exception|
+    render plain: "woops: cannot find race[#{params[:id]}]", status: :not_found
+  end
+
   # GET api/races
   def index
     if !request.accept || request.accept == "*/*"
