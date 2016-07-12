@@ -1,6 +1,6 @@
 class Api::RacesController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_race, only: [:show]
+  before_action :set_race, only: [:show, :update]
 
   # GET api/races
   def index
@@ -30,6 +30,15 @@ class Api::RacesController < ApplicationController
     else
       race = Race.create(race_params)
       render plain: race.name, status: :created
+    end
+  end
+
+  # PATCH/PUT api/races/:id
+  def update
+    if @race.update(race_params)
+      render json: @race
+    else
+      render json: @race.errors, status: :unprocessable_entity
     end
   end
 
