@@ -9,7 +9,9 @@ class Api::ResultsController < ApplicationController
     else
       race=Race.find(params[:race_id])
       entrants = race.entrants
-      render template: "api/results_show", :locals => { :entrants => entrants }
+      if stale?(:last_modified => entrants.max(:updated_at))
+        render template: "api/results_show", :locals => { :entrants => entrants }
+      end
     end
   end
 
