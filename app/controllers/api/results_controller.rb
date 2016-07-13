@@ -7,7 +7,9 @@ class Api::ResultsController < ApplicationController
       # stub implementation
       render plain: "/api/races/#{params[:race_id]}/results"
     else
-      # real implementation
+      race=Race.find(params[:race_id])
+      entrants = race.entrants
+      render template: "api/results_show", :locals => { :entrants => entrants }
     end
   end
 
