@@ -1,10 +1,23 @@
 class Api::RacesController < ApplicationController
   protect_from_forgery with: :null_session
-  before_action :set_race, only: [:show, :update, :destroy]
 
   # Global exception handler for when a document is not found
   rescue_from Mongoid::Errors::DocumentNotFound do |exception|
-    render plain: "woops: cannot find race[#{params[:id]}]", status: :not_found
+    msg = "woops: cannot find race[#{params[:id]}]"
+    if !request.accept || request.accept == "*/*"
+      render plain: msg, status: :not_found
+    else
+      render :status => :not_found,
+             :template => "api/error_msg",
+             :locals => { :msg=>msg }
+    end
+  end
+
+  # Global exception handler for when an unsupported content-type is attempted
+  rescue_from ActionView::MissingTemplate do |exception|
+    content_type = "#{request.accept}"
+    render plain: 'woops: we do not support that content-type[' + content_type + ']',
+      status: :unsupported_media_type
   end
 
   # GET api/races
@@ -22,8 +35,11 @@ class Api::RacesController < ApplicationController
     if !request.accept || request.accept == "*/*"
       render plain: "/api/races/#{params[:id]}"
     else
+      race = Race.find(params[:id])
       # real implementation
-      render json: @race
+      render :status => :ok,
+             :template => "api/race_show",
+             :locals => { :name=>race.name, :date=>race.date }
     end
   end
 
@@ -40,24 +56,22 @@ class Api::RacesController < ApplicationController
 
   # PATCH/PUT api/races/:id
   def update
-    if @race.update(race_params)
-      render json: @race
+    race = Race.find(params[:id])
+    if race.update(race_params)
+      render json: race
     else
-      render json: @race.errors, status: :unprocessable_entity
+      render json: race.errors, status: :unprocessable_entity
     end
   end
 
   # DELETE api/races/:id
   def destroy
-    @race.destroy
+    race = Race.find(params[:id])
+    race.destroy
     render :nothing => true, :status => :no_content
   end
 
   private
-   # Use callbacks to share common setup or constraints between actions.
-    def set_race
-      @race = Race.find(params[:id])
-    end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def race_params
