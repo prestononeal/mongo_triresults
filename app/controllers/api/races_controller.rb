@@ -5,6 +5,7 @@ class Api::RacesController < ApplicationController
   rescue_from Mongoid::Errors::DocumentNotFound do |exception|
     msg = "woops: cannot find race[#{params[:id]}]"
     if !request.accept || request.accept == "*/*"
+      # stub implementation
       render plain: msg, status: :not_found
     else
       render :status => :not_found,
@@ -23,6 +24,7 @@ class Api::RacesController < ApplicationController
   # GET api/races
   def index
     if !request.accept || request.accept == "*/*"
+      # stub implementation
       offset = params['']
       render plain: "/api/races, offset=[#{params["offset"]}], limit=[#{params["limit"]}]"
     else
@@ -33,10 +35,10 @@ class Api::RacesController < ApplicationController
   # GET api/races/:id
   def show
     if !request.accept || request.accept == "*/*"
+      # stub implementation
       render plain: "/api/races/#{params[:id]}"
     else
       race = Race.find(params[:id])
-      # real implementation
       render :status => :ok,
              :template => "api/race_show",
              :locals => { :name=>race.name, :date=>race.date }
@@ -46,6 +48,7 @@ class Api::RacesController < ApplicationController
   # POST api/races
   def create
     if !request.accept || request.accept == "*/*"
+      # stub implementation
       txt = params.key?(:race) ? "#{params[:race][:name]}" : :nothing
       render plain: txt, status: :ok
     else

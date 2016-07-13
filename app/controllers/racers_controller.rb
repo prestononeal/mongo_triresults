@@ -1,6 +1,7 @@
 class RacersController < ApplicationController
   before_action :set_racer, only: [:show, :edit, :update, :destroy]
   skip_before_filter :verify_authenticity_token
+  protect_from_forgery with: :null_session
 
   # GET /racers
   # GET /racers.json
